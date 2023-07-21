@@ -1,0 +1,28 @@
+- name: Playbook for ZOS Datasets
+  hosts: zos
+  collections: 
+    - ibm.ibm_zos_core
+  gather_facts: no
+  vars: 
+    tgt_tmp_dir: "/tmp"
+
+  tasks: 
+
+    - name: Create a Sequential Data Set Name and store it off
+      command: "mvstmp {{ ansible_user | upper }}"
+      register: tmp_ds_seq
+
+    - name: Create a Partitioned Data Set Name and store it off
+      command: "mvstmp {{ ansible_user | upper }}"
+      register: tmp_ds_pds
+
+    - name: Set names for sequetial and partitioned Data Sets for use by this Playbook
+      set_fact: 
+        data_set_name: "{{ tmp_ds_seq.stdout }}"
+        pds_name:      "{{ tmp_ds_pds.stdout }}"
+
+    - name: Fact 'data_set_name' ande 'pds_name' set with values'
+      debug:
+        msg: 
+          - "Sequential Data Set Name  - {{ data_set_name }}"
+          - "Partitioned Data Set Name - {{ pds_name }}"

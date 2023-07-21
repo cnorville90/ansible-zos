@@ -1,0 +1,2 @@
+[zos]
+zxp.ibmz.ibm.com ansible_user=z32542 ansible_pass=coco0920
