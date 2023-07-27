@@ -1,0 +1,28 @@
+environment_vars: 
+  MANPATH: /usr/lib/%L
+  TOOLS_ROOT: 
+  TOOLS_PATH:
+  TOOLS_EXTRA:
+  PYTHON_HOME: "{{ PYZ }}"
+  PYTHON: "{{ PYZ }}/bin"
+  PYTHONPATH: "{{ ZOAU }}/lib" 
+  FFI_LAB:
+  ZOAU_HOME: "{{ ZOAU }}"
+  ZOAU: "{{ ZOAU }}/bin/"
+  ZOAU_ROOT: "{{ ZOAU }}"
+  ZOAUTIL_DIR: "{{ ZOAU }}"
+  JAVA_HOME: 
+  _CEE_RUNOPTS: "FILETAG(AUTOCVT,AUTOTAG) POSIX(ON)"
+  _BPXK_JOBLOG: STDERR
+  PKG_CONFIG_PATH: "{{ PYZ }}/lib/pkgconfig"
+  CURL_CA_BUNDLE:
+  LIBPATH:
+  PATH:
+  TERMINFO:
+  TERM:
+  _BPXK_AUTOCVT:
+  _TAG_REDIR_ERR:
+  _TAG_REDIR_IN:
+  _TAG_REDIR_OUT:
+  LANG:
+  NLSPATH:
