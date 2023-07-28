@@ -18,15 +18,23 @@
       zos_ping:
       register: zos_ping_result
 
-    - name: DUmp out the results of the Ping
+    - name: Dump out the results of the Ping
       debug: 
         var: zos_ping_result
     
+    # - name: Convert a ASCII file to EBCDIC
+    #   zos_encode: 
+    #     src: ZXP.PUBLIC.INPUT(ANSIBLED)
+    #     dest: Z32542.SOURCE(FRMASCII)
+    #     encoding:
+    #       from: ISO8859-1
+    #       to: IBM-1047
+
     - name: Convert a ASCII file to EBCDIC
       zos_encode: 
         src: ZXP.PUBLIC.INPUT(ANSIBLED)
         dest: Z32542.SOURCE(FRMASCII)
-        encoding:
-          from: ISO8859-1
-          to: IBM-1047
+        from_encoding: ISO8859-1
+        to_encoding:   IBM-1047
+
 

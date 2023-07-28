@@ -1,7 +1,7 @@
 ---
 ansible-navigator:
   execution-environment:
-    image: localhost/ee-norville:v1.1
+    image: localhost/ee-zos:v1.0
     pull:
       policy: missing
   playbook-artifact:

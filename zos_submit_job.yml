@@ -1,5 +1,5 @@
 ---
-- name: Playbook to convert an ASCII file to EBCDIC
+- name: Playbook to submit a JCL and check the status
   hosts: zos
   gather_facts: no
   environment:
@@ -15,13 +15,17 @@
 
   tasks:
       
-    - name: Submit a IEFBR14
+    - name: Submit a job
       zos_job_submit:
-        src: "{{ansible_user}}.JCL(IEFBR14)"
+        src: "Z32542.JCL(MERGSORT)"
         location: DATA_SET
-        wait: true
         return_output: true
+        wait_time_s: 20
       register: job_detail
+
+    - name: Debug job_detail
+      debug:
+        var: job_detail
 
     - name: Setting fact `Job Results`
       set_fact:
