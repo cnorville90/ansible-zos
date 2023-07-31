@@ -23,10 +23,6 @@
         wait_time_s: 20
       register: job_detail
 
-    - name: Debug job_detail
-      debug:
-        var: job_detail
-
     - name: Setting fact `Job Results`
       set_fact:
         job_results: "{{ job_detail.jobs[0]}}"
