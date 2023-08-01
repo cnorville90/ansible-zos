@@ -1,3 +1,5 @@
 collections: 
   - name: ibm.ibm_zos_core
     version: 1.4.1
+  - name: servicenow.itsm
+    version: 2.3.0
