@@ -12,10 +12,6 @@
       zos_ping:
       register: result
 
-    - name: Display the name of the SNOW Incident 
-      debug: 
-        msg: "SNOW Incident is: {{ incident_number_cached }}"
-
     - name: Display the ping result
       debug: 
         msg: "{{ result.ping }}"
