@@ -11,9 +11,10 @@
       _BPXK_AUTOCVT: "ON"
 
   collections: 
-    ibm.ibm_zos_core
+    - ibm.ibm_zos_core
 
   tasks: 
 
     - name: Gather facts from the target z/OS system
       zos_gather_facts:
+

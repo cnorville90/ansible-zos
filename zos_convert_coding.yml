@@ -14,27 +14,15 @@
     ibm.ibm_zos_core
 
   tasks: 
+
     - name: Ping the mainframe, lets see if we can work with it
       zos_ping:
       register: zos_ping_result
 
-    - name: Dump out the results of the Ping
-      debug: 
-        var: zos_ping_result
-    
-    # - name: Convert a ASCII file to EBCDIC
-    #   zos_encode: 
-    #     src: ZXP.PUBLIC.INPUT(ANSIBLED)
-    #     dest: Z32542.SOURCE(FRMASCII)
-    #     encoding:
-    #       from: ISO8859-1
-    #       to: IBM-1047
-
-    - name: Convert a ASCII file to EBCDIC
+    - name: Convert an ASCII encoded file to EBCDIC
       zos_encode: 
         src: ZXP.PUBLIC.INPUT(ANSIBLED)
         dest: Z32542.SOURCE(FRMASCII)
-        from_encoding: ISO8859-1
-        to_encoding:   IBM-1047
-
-
+        encoding:
+          from: ISO8859-1
+          to: IBM-1047

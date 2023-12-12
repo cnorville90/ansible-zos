@@ -1,2 +1,5 @@
 [zos]
-zxp.ibmz.ibm.com ansible_user=z32542 ansible_pass=coco0920
+zxp.ibmz.ibm.com ansible_user=Z32542 ansible_pass=GYM23FAX
+
+[ZLPW]
+p1377-z1.p1377.cecc.ihost.com ansible_user=cecuser ansible_pass=-sK29b8oAYC1WK+

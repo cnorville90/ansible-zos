@@ -1,6 +1,6 @@
 ---
 - name: Ping a ZOS System
-  hosts: all
+  hosts: zos
   gather_facts: no
   
   collections: 
