@@ -1,5 +1,5 @@
 ---
-- name: Ping a ZOS System
+- name: Ping a ZOS System using Ansible zos_ping
   hosts: all
   gather_facts: no
   
@@ -15,4 +15,3 @@
     - name: Display the ping result
       debug: 
         msg: "{{ result.ping }}"
-
