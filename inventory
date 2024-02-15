@@ -1,5 +1,0 @@
-[zos]
-zxp.ibmz.ibm.com ansible_user=Z32542 ansible_pass=GYM23FAX
-
-[zos_tz] 
-52.116.124.120 ansible_user=ibmuser ansible_ssh_private_key_file=ssh_private_key.pem
