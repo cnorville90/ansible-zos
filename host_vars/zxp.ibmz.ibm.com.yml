@@ -1,4 +1,20 @@
-PYZ: "/usr/lpp/IBM/cyp/v3r9/pyz"
-ZOAU: "/usr/lpp/IBM/zoautil"
-
-ansible_python_interpreter: "{{ PYZ }}/bin/python3"
+{
+  "PYZ":  "/usr/lpp/IBM/cyp/v3r9/pyz",
+  "ZOAU": "/usr/lpp/IBM/zoautil",
+  "zoau_home": "/usr/lpp/IBM/zoautil",
+  "python_path": /usr/lpp/IBM/cyp/v3r9/pyz,
+  "ansible_python_interpreter": "{{python_path}}/bin/python3",
+  "environment_vars": {
+     "ZOAU_ROOT": "{{zoau_home}}",
+     "ZOAU_HOME": "{{zoau_home}}",
+     "PATH": "{{zoau_home}}/bin:{{python_path}}/bin:/bin:.",
+     "LIBPATH": "{{zoau_home}}/lib:{{python_path}}/lib:/lib:/usr/lib:.",
+     "PYTHONPATH": "{{zoau_home}}/lib",
+     "_TAG_REDIR_ERR": txt,
+     "_TAG_REDIR_IN": txt,
+     "_TAG_REDIR_OUT": txt,
+     "_BPXK_AUTOCVT": "ON",
+     "tgt_tmp_dir": "/tmp",
+     "ctl_tmp_dir": "/tmp"
+  }
+}

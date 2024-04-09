@@ -1,0 +1,19 @@
+---
+- name: Playbook to submit a JCL job from a local file and check the status
+  hosts: zos
+  gather_facts: no
+  environment: "{{ environment_vars }}"
+
+  collections: 
+    ibm.ibm_zos_core
+
+  tasks:
+
+    - name: Submit a job
+      zos_job_submit:
+        src: "Z32542.JCL(MERGSORT)"
+        location: DATA_SET
+        wait_time_s: 60
+        return_output: false
+      register: job_detail
+      ignore_errors: true

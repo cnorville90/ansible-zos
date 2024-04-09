@@ -2,35 +2,39 @@
 - name: Playbook to submit a JCL and check the status
   hosts: zos
   gather_facts: no
-  environment:
-      ZOAU_ROOT: "{{zoau_home}}"
-      ZOAU_HOME: "{{zoau_home}}"
-      PATH: "{{zoau_home}}/bin:{{python_path}}/bin:/bin:."
-      LIBPATH: "{{zoau_home}}/lib:{{python_path}}/lib:/lib:/usr/lib:."
-      PYTHONPATH: "{{zoau_home}}/lib"
-      _BPXK_AUTOCVT: "ON"
+  environment: "{{ environment_vars }}"
 
   collections: 
     ibm.ibm_zos_core
 
   tasks:
-      
-    - name: Submit a job
-      zos_job_submit:
-        src: "Z32542.JCL(MERGSORT)"
-        location: DATA_SET
-        return_output: true
-        wait_time_s: 20
-      register: job_detail
 
-    - name: Debug job_detail
+    # - name: Submit a job
+    #   zos_job_submit:
+    #     src: "Z32542.JCL(MERGSORT)"
+    #     location: DATA_SET
+    #     wait_time_s: 60
+    #     return_output: false
+    #   register: job_detail
+    #   ignore_errors: true
+
+    - name: Query the job
+      zos_job_query:
+        job_id: "JOB04068"
+      register: job_results
+
+    - name: Dump out job_results
       debug:
-        var: job_detail
+        var: job_results
 
-    - name: Setting fact `Job Results`
-      set_fact:
-        job_results: "{{ job_detail.jobs[0]}}"
+    # - name: Debug job_detail
+    #   debug:
+    #     var: job_detail
 
-    - name: Results
-      debug:  
-        msg: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg}}"
+    # - name: Setting fact `Job Results`
+    #   set_fact:
+    #     job_results: "{{ job_detail.jobs[0]}}"
+
+    # - name: Results
+    #   debug:  
+    #     msg: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg}}"

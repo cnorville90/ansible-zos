@@ -1,5 +1,9 @@
 ---
 ansible-navigator:
+  ansible:
+    inventory:
+      entries:
+        - ./inventory
   execution-environment:
     image: quay.io/cnorvill/ee-norville:v1.3
     pull:
