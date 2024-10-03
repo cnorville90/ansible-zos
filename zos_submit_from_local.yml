@@ -6,18 +6,22 @@
 
   tasks:
 
+    - name: Preparing to submit a JCL Job 
+      ansible.builtin.debug:
+        msg: "About to submit job Z32542.JCL({{ jcl_job_to_submit }}) os system {{ inventory_hostname }}"
+
     - name: Submit a job
       ibm.ibm_zos_core.zos_job_submit:
-        src: "Z32542.JCL(MERGSORT)"
+        src: "Z32542.JCL({{ jcl_job_to_submit }})"
         location: DATA_SET
         wait_time_s: 60
         return_output: false
       register: job_detail
       ignore_errors: true
 
-    - name: Display job details
-      ansible.builtin.debug:
-        var: job_detail
+    # - name: Display job details
+    #   ansible.builtin.debug:
+    #     var: job_detail
 
     - name: Extract out jobID and Completion Code
       ansible.builtin.debug:
