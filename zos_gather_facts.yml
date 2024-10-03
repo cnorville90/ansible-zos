@@ -10,8 +10,11 @@
   #     PYTHONPATH: "{{zoau_home}}/lib"
   #     _BPXK_AUTOCVT: "ON"
 
+  collections: 
+    ibm.ibm_zos_core
+
   tasks: 
 
     - name: Gather facts from the target z/OS system
-      ibm.ibm_zos_core.zos_gather_facts:
+      zos_gather_facts:
 
