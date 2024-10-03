@@ -19,4 +19,8 @@
       ansible.builtin.debug:
         var: job_detail
 
+    - name: Extract out jobID and Completion Code
+      ansible.builtin.debug:
+        msg: "Job ID: {{ job_detail.jobs[0].job_id }} completed with code: {{ job_detail.jobs[0].ret_code.msg }}"
+
       
