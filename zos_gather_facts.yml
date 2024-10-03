@@ -2,19 +2,16 @@
 - name: Playbook to gather System facts from a Z/OS installation
   hosts: all
   gather_facts: no
-  # environment:
-  #     ZOAU_ROOT: "{{zoau_home}}"
-  #     ZOAU_HOME: "{{zoau_home}}"
-  #     PATH: "{{zoau_home}}/bin:{{python_path}}/bin:/bin:."
-  #     LIBPATH: "{{zoau_home}}/lib:{{python_path}}/lib:/lib:/usr/lib:."
-  #     PYTHONPATH: "{{zoau_home}}/lib"
-  #     _BPXK_AUTOCVT: "ON"
-
-  collections: 
-    ibm.ibm_zos_core
+  environment:
+      ZOAU_ROOT: "{{zoau_home}}"
+      ZOAU_HOME: "{{zoau_home}}"
+      PATH: "{{zoau_home}}/bin:{{python_path}}/bin:/bin:."
+      LIBPATH: "{{zoau_home}}/lib:{{python_path}}/lib:/lib:/usr/lib:."
+      PYTHONPATH: "{{zoau_home}}/lib"
+      _BPXK_AUTOCVT: "ON"
 
   tasks: 
 
     - name: Gather facts from the target z/OS system
-      zos_gather_facts:
+      ibm.ibm_zos_core.zos_gather_facts:
 
