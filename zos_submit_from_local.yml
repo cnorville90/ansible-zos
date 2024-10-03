@@ -14,3 +14,9 @@
         return_output: false
       register: job_detail
       ignore_errors: true
+
+    - name: Display job details
+      ansible.builtin.debug:
+        var: job_detail
+
+      
