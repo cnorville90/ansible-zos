@@ -1,15 +1,12 @@
 ---
 - name: Ping a ZOS System using Ansible zos_ping
-  hosts: zos_tz
+  hosts: all
   gather_facts: no
   
-  collections: 
-    - ibm.ibm_zos_core
-
   tasks: 
 
-    - name: Ping a ZOS system 
-      zos_ping:
+    - name: Ping a ZOS system
+      ibm.ibm_zos_core.zos_ping:
       register: result
 
     - name: Display the ping result

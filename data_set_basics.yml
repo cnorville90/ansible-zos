@@ -26,3 +26,19 @@
         msg:
           - "Sequential Data Set Name  - {{ data_set_name }}"
           - "Partitioned Data Set Name - {{ pds_name }}"
+
+    - name: Create a partitioned dataset on zos
+      # Content suggestion provided by Ansible Lightspeed
+      ibm.ibm_zos_core.zos_data_set:
+        name: "{{ pds_name }}"
+        type: pds
+        space_primary: 5
+        space_secondary: 2
+        space_type: cyl
+        record_length: 100
+        block_size: 3200
+        replace: true
+        state: present
+      register: result
+
+
