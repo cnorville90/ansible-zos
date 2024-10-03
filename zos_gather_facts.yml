@@ -15,3 +15,7 @@
     - name: Gather facts from the target z/OS system
       ibm.ibm_zos_core.zos_gather_facts:
 
+    - name: Dump out Z/OS system facts for "{{ inventory_hostname }}"
+      ansible.builtin.debug:
+        var: ansible_facts
+
