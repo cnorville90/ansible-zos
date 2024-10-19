@@ -1,7 +1,7 @@
 ---
 - name: SNOW Create an incident - AAP
   hosts: all
-  gather_facts: No
+  gather_facts: no
   environment: "{{ environment_vars }}"
 
   vars:
