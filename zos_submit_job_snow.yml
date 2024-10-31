@@ -54,17 +54,13 @@
         wait_time_s: 20
       register: job_detail
 
-    - name: Dump out job_detail
-      ansible.builtin.debug:
-        var: job_detail
-
     - name: Setting fact `Job Results`
       set_fact:
         job_results: "{{ job_detail.jobs[0]}}"
 
     - name: Results
       debug:  
-        msg: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg}}"
+        msg: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg }} {{ job_results.ret_code.msg_code }}"
 
     - name: Update the SNOW ticket with the JCL Job status
       servicenow.itsm.incident:
@@ -72,6 +68,6 @@
         caller: "{{ sn_username }}"
         number: "{{ incident_number_cached }}"
         other:
-          work_notes: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg}}"
+          work_notes: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg }} {{ job_results.ret_code.msg_code }}"
       delegate_to: localhost
-      when: job_results.ret_code.msg == "CC 0000"
+      when: job_results.ret_code.msg_code == "0000"
