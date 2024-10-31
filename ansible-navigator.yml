@@ -5,7 +5,7 @@ ansible-navigator:
       entries:
         - ./inventory
   execution-environment:
-    image: quay.io/cnorvill/ee-norville:v1.3
+    image: localhost/ee-norville-main-testing:1.0
     pull:
       policy: missing
   playbook-artifact:

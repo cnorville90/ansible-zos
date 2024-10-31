@@ -2,19 +2,13 @@
 - name: Playbook to check the status of JCL jobs
   hosts: zos
   gather_facts: no
-  environment:
-      ZOAU_ROOT: "{{zoau_home}}"
-      ZOAU_HOME: "{{zoau_home}}"
-      PATH: "{{zoau_home}}/bin:{{python_path}}/bin:/bin:."
-      LIBPATH: "{{zoau_home}}/lib:{{python_path}}/lib:/lib:/usr/lib:."
-      PYTHONPATH: "{{zoau_home}}/lib"
-      _BPXK_AUTOCVT: "ON"
-
+  environment: "{{ environment_vars }}"
+  
   collections: 
-    ibm.ibm_zos_core
+    ibm.zos_core
 
   tasks:
 
-    - name: Query a job .
+    - name: Query a job 
       zos_job_query:
-        job_id: "JOB01880"
+        job_id: "JOB05281"
