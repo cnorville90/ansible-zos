@@ -54,6 +54,10 @@
         wait_time_s: 20
       register: job_detail
 
+    - name: Dump out job_detail
+      ansible.builtin.debug:
+        var: job_detail
+
     - name: Setting fact `Job Results`
       set_fact:
         job_results: "{{ job_detail.jobs[0]}}"
