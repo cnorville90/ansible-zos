@@ -1,6 +1,6 @@
 ---
 - name: Ping a ZOS System using Ansible zos_ping
-  hosts: all
+  hosts: zos
   gather_facts: no
   
   tasks: 
