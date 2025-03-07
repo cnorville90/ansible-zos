@@ -5,7 +5,8 @@ ansible-navigator:
       entries:
         - ./inventory
   execution-environment:
-    image: localhost/ee-zos:v1.5 
+    image: localhost/ee-norville-testing:v1.2 
+    # image: quay.io/jacob_emery/aap4zos-ee:latest
     pull:
       policy: missing
   playbook-artifact:
