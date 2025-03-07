@@ -13,7 +13,7 @@
     - name: Submit a job
       ibm.ibm_zos_core.zos_job_submit:
         src: "Z32542.JCL({{ jcl_job_to_submit }})"
-        location: DATA_SET
+        location: data_set
         wait_time_s: 60
         return_output: true
       register: job_detail

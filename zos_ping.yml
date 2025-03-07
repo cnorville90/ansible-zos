@@ -2,6 +2,7 @@
 - name: Ping a ZOS System using Ansible zos_ping
   hosts: zos
   gather_facts: no
+  environment: "{{ environment_vars }}"
   
   tasks: 
 
