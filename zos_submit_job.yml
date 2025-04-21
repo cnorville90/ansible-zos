@@ -7,7 +7,7 @@
 
   tasks:
 
-    - name: Submit a job
+    - name: Submit a JCL job at a Z/OS System
       ibm.ibm_zos_core.zos_job_submit:
         src: "Z32542.JCL(MERGSORT)"
         location: data_set
@@ -31,8 +31,8 @@
 
     - name: Setting fact `Job Results`
       set_fact:
-        job_results: "{{ job_detail.jobs[0]}}"
+        job_results: "{{ job_detail.jobs[0] }}"
 
     - name: Results
       debug:  
-        msg: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg}}"
+        msg: "Job {{ job_results.job_id }} completed with {{ job_results.ret_code.msg }} {{ job_results.ret_code.msg_code }}"
