@@ -25,14 +25,14 @@
     #   debug:
     #     var: job_results
 
-    # - name: Debug job_detail
-    #   debug:
-    #     var: job_detail
+    - name: Debug job_detail
+      debug:
+        var: job_detail
 
-    # - name: Setting fact `Job Results`
-    #   set_fact:
-    #     job_results: "{{ job_detail.jobs[0]}}"
+    - name: Setting fact `Job Results`
+      set_fact:
+        job_results: "{{ job_detail.jobs[0]}}"
 
-    # - name: Results
-    #   debug:  
-    #     msg: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg}}"
+    - name: Results
+      debug:  
+        msg: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg}}"
