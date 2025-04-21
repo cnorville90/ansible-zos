@@ -4,28 +4,26 @@
   gather_facts: no
   environment: "{{ environment_vars }}"
 
-  collections: 
-    ibm.ibm_zos_core
 
   tasks:
 
-    # - name: Submit a job
-    #   zos_job_submit:
-    #     src: "Z32542.JCL(MERGSORT)"
-    #     location: DATA_SET
-    #     wait_time_s: 60
-    #     return_output: false
-    #   register: job_detail
-    #   ignore_errors: true
+    - name: Submit a job
+      ibm.ibm_zos_core.zos_job_submit:
+        src: "Z32542.JCL(MERGSORT)"
+        location: DATA_SET
+        wait_time_s: 60
+        return_output: false
+      register: job_detail
+      ignore_errors: true
 
-    - name: Query the job
-      zos_job_query:
-        job_id: "JOB04068"
-      register: job_results
+    # - name: Query the job
+    #   zos_job_query:
+    #     job_id: "JOB04068"
+    #   register: job_results
 
-    - name: Dump out job_results
-      debug:
-        var: job_results
+    # - name: Dump out job_results
+    #   debug:
+    #     var: job_results
 
     # - name: Debug job_detail
     #   debug:
