@@ -49,7 +49,7 @@
     - name: Submit a JCL job
       ibm.ibm_zos_core.zos_job_submit:
         src: "Z32542.JCL(MERGSORT)"
-        location: DATA_SET
+        location: data_set
         return_output: true
         wait_time_s: 20
       register: job_detail
