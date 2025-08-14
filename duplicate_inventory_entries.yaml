@@ -1,0 +1,172 @@
+---
+- name: Find hosts with duplicate IP addresses across AAP inventories
+  hosts: localhost
+  gather_facts: false
+  vars:
+    aap_controller_host: "{{ controller_host | default('https://{{ aap_fqdn }}') }}"
+    aap_username: "{{ controller_username | default('cleanup') }}"
+    aap_password: "{{ controller_password | default('') }}"
+    oauth_token: "{{ controller_token | default('') }}"
+    verify_ssl: "{{ controller_verify_ssl | default(false) }}"
+  #   inventory_filter: "{{ inventory_name | default('') }}"  # Optional: filter by specific inventory
+
+  tasks:
+    - name: Get all inventories from AAP
+      uri:
+        url: "{{ aap_controller_host }}/api/controller/v2/inventories/"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ oauth_token }}"
+        validate_certs: "{{ verify_ssl }}"
+        return_content: yes
+        user: "{{ aap_username }}"
+        password: "{{ aap_password }}"
+      register: inventories_response
+      when: oauth_token != ""
+
+
+    # - name: Get all inventories from AAP (with basic auth)
+    #   uri:
+    #     url: "{{ aap_controller_host }}/api/controller/v2/inventories/"
+    #     method: GET
+    #     # user: "{{ aap_username }}"
+    #     # password: "{{ aap_password }}"
+    #     force_basic_auth: yes
+    #     validate_certs: "{{ verify_ssl }}"
+    #     return_content: yes
+    #   register: inventories_response
+    #   when: oauth_token == ""
+
+
+    - name: Filter inventories if specified
+      set_fact:
+        filtered_inventories: "{{ inventories_response.json.results | selectattr('name', 'match', inventory_filter) | list }}"
+      when: inventory_filter != ""
+
+    - name: Use all inventories if no filter specified
+      set_fact:
+        filtered_inventories: "{{ inventories_response.json.results }}"
+      when: inventory_filter == ""
+
+
+    - name: Get hosts from each inventory
+      uri:
+        url: "{{ aap_controller_host }}/api/controller/v2/inventories/{{ item.id }}/hosts/"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ oauth_token }}"
+        validate_certs: "{{ verify_ssl }}"
+        return_content: yes
+      register: hosts_responses
+      loop: "{{ filtered_inventories }}"
+      when: oauth_token != ""
+
+
+    - name: Get hosts from each inventory (with basic auth)
+      uri:
+        url: "{{ aap_controller_host }}/api/controller/v2/inventories/{{ item.id }}/hosts/"
+        method: GET
+        # user: "{{ aap_username }}"
+        # password: "{{ aap_password }}"
+        force_basic_auth: yes
+        validate_certs: "{{ verify_ssl }}"
+        return_content: yes
+      register: hosts_responses
+      loop: "{{ filtered_inventories }}"
+      when: oauth_token == ""
+
+      
+    - name: Flatten all hosts data
+      set_fact:
+        all_hosts: >-
+          {{
+            hosts_responses.results | map(attribute='json.results') | flatten |
+            map('combine', {'inventory_name': filtered_inventories[ansible_loop.index0].name}) |
+            list
+          }}
+    - name: Extract host information with IP addresses
+      set_fact:
+        host_ip_mapping: >-
+          {{
+            all_hosts | map('extract_host_info') | select | list
+          }}
+      vars:
+        extract_host_info: |
+          {%- set host_info = {} -%}
+          {%- set ip_vars = ['ansible_host', 'ip', 'ipv4_address', 'ansible_ssh_host'] -%}
+          {%- for var in ip_vars -%}
+            {%- if item.variables.get(var) -%}
+              {%- set _ = host_info.update({
+                'hostname': item.name,
+                'inventory': item.inventory_name,
+                'ip_address': item.variables[var],
+                'ip_var': var,
+                'host_id': item.id
+              }) -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {{ host_info if host_info else none }}
+    - name: Group hosts by IP address
+      set_fact:
+        ip_groups: >-
+          {{
+            host_ip_mapping | groupby('ip_address') |
+            map('list') | list
+          }}
+    - name: Find duplicate IP addresses
+      set_fact:
+        duplicate_ips: >-
+          {{
+            ip_groups | selectattr('1', 'length', 'gt', 1) |
+            map(attribute='1') | list
+          }}
+    - name: Display results
+      debug:
+        msg: |
+          =================================
+          DUPLICATE IP ADDRESS ANALYSIS
+          =================================
+          Found {{ duplicate_ips | length }} IP addresses with multiple hostnames
+      when: duplicate_ips | length > 0
+    - name: Display duplicate IP details
+      debug:
+        msg: |
+          IP Address: {{ item.0.ip_address }}
+          Hosts with this IP:
+          {% for host in item %}
+          - Hostname: {{ host.hostname }}
+            Inventory: {{ host.inventory }}
+            IP Variable: {{ host.ip_var }}
+            Host ID: {{ host.host_id }}
+          {% endfor %}
+          ---
+      loop: "{{ duplicate_ips }}"
+      when: duplicate_ips | length > 0
+    - name: No duplicates found
+      debug:
+        msg: "No duplicate IP addresses found across inventories"
+      when: duplicate_ips | length == 0
+    - name: Generate CSV report
+      copy:
+        dest: "./duplicate_ips_report_{{ ansible_date_time.epoch }}.csv"
+        content: |
+          IP Address,Hostname,Inventory,IP Variable,Host ID
+          {% for ip_group in duplicate_ips %}
+          {% for host in ip_group %}
+          {{ host.ip_address }},{{ host.hostname }},{{ host.inventory }},{{ host.ip_var }},{{ host.host_id }}
+          {% endfor %}
+          {% endfor %}
+      when: duplicate_ips | length > 0
+    - name: Report summary
+      debug:
+        msg: |
+          =================================
+          SUMMARY
+          =================================
+          Total inventories checked: {{ filtered_inventories | length }}
+          Total hosts analyzed: {{ host_ip_mapping | length }}
+          Duplicate IP addresses found: {{ duplicate_ips | length }}
+          {% if duplicate_ips | length > 0 %}
+          CSV report saved as: duplicate_ips_report_{{ ansible_date_time.epoch }}.csv
+          {% endif %}
