@@ -15,7 +15,7 @@
         state: new
         caller: "{{ sn_username }}"
         short_description: "User {{ sn_username }} created a new incident using Ansible"
-        description: "User {{ sn_username }} successfully created a new incident! Something is broken! Fix it!"
+        description: "User {{ sn_username }} successfully created a new incident! Something is broken at Amgen! Fix it!"
         impact: low
         urgency: low
       register: new_incident
