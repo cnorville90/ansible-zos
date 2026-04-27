@@ -1,0 +1,77 @@
+---
+- name: Submit a JCl job on a Z/OS System - Update SNOW Request ticket
+  hosts: all
+  gather_facts: no
+  environment: "{{ environment_vars }}"
+
+  vars:
+    sn_username: "{{ lookup('ansible.builtin.env', 'SN_USERNAME') }}"
+    sn_instance: "{{ lookup('ansible.builtin.env', 'SN_HOST') }}"
+
+  tasks:
+
+    - name: Display the ping result
+      debug: 
+        msg: > 
+          "SNOW Req: {{ sn_request_number }}"
+          "JCL Job to Submit: {{ jcl_job_to_submit }}"
+
+    # payload:
+    #   catalog_item: Norville - SNOW EDA AAP JCL ZOS
+    #   event: SERVICE_CATALOG
+    #   jcl_job_to_submit: MERGSORT
+    #   request_number: REQ0011828
+    #   requester: cnorvill@redhat.com
+
+    # - set_fact:
+    #     incident_number_cached: "{{ new_incident.record.number }}"
+    #     cacheable: true
+
+    # Update to acknowledge the ticket
+
+    # - ansible.builtin.debug:
+    #     msg: "A new incident has been created: {{ new_incident.record.number }}"
+
+    # - name: Ping the mainframe to see if we can work with it, update the ticket
+    #   ibm.ibm_zos_core.zos_ping: 
+    #   register: ping_result
+
+    # - name: Display the ping result
+    #   debug: 
+    #     msg: "{{ ping_result.ping }}"
+
+    # - name: Update the SNOW ticket before running the JCL
+    #   servicenow.itsm.incident:
+    #     state: in_progress
+    #     caller: "{{ sn_username }}"
+    #     number: "{{ incident_number_cached }}"
+    #     other:
+    #       work_notes: "System: {{ inventory_hostname }} is responding"
+    #   delegate_to: localhost
+    #   when: ping_result.ping == "pong"
+
+    # - name: Submit a JCL job
+    #   ibm.ibm_zos_core.zos_job_submit:
+    #     src: "Z32542.JCL(MERGSORT)"
+    #     location: data_set
+    #     return_output: true
+    #     wait_time_s: 20
+    #   register: job_detail
+
+    # - name: Setting fact `Job Results`
+    #   set_fact:
+    #     job_results: "{{ job_detail.jobs[0]}}"
+
+    # - name: Results
+    #   debug:  
+    #     msg: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg }} {{ job_results.ret_code.msg_code }}"
+
+    # - name: Update the SNOW ticket with the JCL Job status
+    #   servicenow.itsm.incident:
+    #     state: in_progress
+    #     caller: "{{ sn_username }}"
+    #     number: "{{ incident_number_cached }}"
+    #     other:
+    #       work_notes: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg }} {{ job_results.ret_code.msg_code }}"
+    #   delegate_to: localhost
+    #   when: job_results.ret_code.msg_code == "0000"

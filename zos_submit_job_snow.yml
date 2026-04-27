@@ -1,5 +1,5 @@
 ---
-- name: SNOW Create an incident - AAP
+- name: Submit a JCl job on a Z/OS System - Update SNOW ticket
   hosts: all
   gather_facts: no
   environment: "{{ environment_vars }}"
@@ -15,7 +15,7 @@
         state: new
         caller: "{{ sn_username }}"
         short_description: "User {{ sn_username }} created a new incident using Ansible"
-        description: "Something is broken at Centene! Fix it before someone finds out!!"
+        description: "Something is broken! Fix it before someone finds out!!"
         impact: low
         urgency: low
       register: new_incident

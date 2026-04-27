@@ -5,7 +5,7 @@ ansible-navigator:
       entries:
         - ./inventory
   execution-environment:
-    image: localhost/ee-norville-testing:v1.2 
+    image: quay.io/cnorvill/zos_snow:v1.0 
     # image: quay.io/jacob_emery/aap4zos-ee:latest
     pull:
       policy: missing
