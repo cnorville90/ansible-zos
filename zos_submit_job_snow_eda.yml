@@ -11,12 +11,12 @@
   tasks:
 
     - name: Display the Vars passed from EDA
-      debug: 
+      ansible.builtin.debug: 
         msg: > 
           "SNOW REQ: {{ sn_request_number }}"
           "JCL Job to Submit: {{ jcl_job_to_submit }}"
           "Requested By: {{ requester }}"
-          "SNOW Catalog Item: {{ event.payload.catalog_item }}"
+          "SNOW Catalog Item: {{ sn_catalog_item }}"
 
     # - set_fact:
     #     incident_number_cached: "{{ new_incident.record.number }}"
