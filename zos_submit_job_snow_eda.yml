@@ -10,18 +10,13 @@
 
   tasks:
 
-    - name: Display the ping result
+    - name: Display the Vars passed from EDA
       debug: 
         msg: > 
-          "SNOW Req: {{ sn_request_number }}"
+          "SNOW REQ: {{ sn_request_number }}"
           "JCL Job to Submit: {{ jcl_job_to_submit }}"
-
-    # payload:
-    #   catalog_item: Norville - SNOW EDA AAP JCL ZOS
-    #   event: SERVICE_CATALOG
-    #   jcl_job_to_submit: MERGSORT
-    #   request_number: REQ0011828
-    #   requester: cnorvill@redhat.com
+          "Requested By: {{ requester }}"
+          "SNOW Catalog Item: {{ event.payload.catalog_item }}"
 
     # - set_fact:
     #     incident_number_cached: "{{ new_incident.record.number }}"
