@@ -28,15 +28,16 @@
       debug: 
         msg: "{{ ping_result.ping }}"
 
-    # - name: Retrieve requested item ticket sysid
-    #   servicenow.itsm.api_info:
-    #     resource: sc_req_item
-    #     sysparm_query: numberSTARTSWITH{{ sn_request_number }}
-    #   register: result
+    - name: Retrieve requested item ticket sysid
+      servicenow.itsm.api_info:
+        resource: sc_req_item
+        sysparm_query: numberSTARTSWITH{{ sn_request_number }}
+      delegate_to: localhost
+      register: result
 
-    # - name: Print the result
-    #   ansible.builtin.debug:
-    #     var: result
+    - name: Print the result
+      ansible.builtin.debug:
+        var: result
 
     # - name: Update the SNOW ticket before running the JCL
     #   servicenow.itsm.incident:
