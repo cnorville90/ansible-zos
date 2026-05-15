@@ -28,15 +28,15 @@
       debug: 
         msg: "{{ ping_result.ping }}"
 
-    - name: Retrieve requested item ticket sysid
-      servicenow.itsm.api_info:
-        resource: sc_req_item
-        sysparm_query: numberSTARTSWITH{{ sn_request_number }}
-      register: result
+    # - name: Retrieve requested item ticket sysid
+    #   servicenow.itsm.api_info:
+    #     resource: sc_req_item
+    #     sysparm_query: numberSTARTSWITH{{ sn_request_number }}
+    #   register: result
 
-    - name: Print the result
-      ansible.builtin.debug:
-        var: result
+    # - name: Print the result
+    #   ansible.builtin.debug:
+    #     var: result
 
     # - name: Update the SNOW ticket before running the JCL
     #   servicenow.itsm.incident:
@@ -48,21 +48,25 @@
     #   delegate_to: localhost
     #   when: ping_result.ping == "pong"
 
-    # - name: Submit a JCL job
-    #   ibm.ibm_zos_core.zos_job_submit:
-    #     src: "Z32542.JCL(MERGSORT)"
-    #     location: data_set
-    #     return_output: true
-    #     wait_time_s: 20
-    #   register: job_detail
+    - name: Debug 
+      ansible.builtin.debug:
+        msg: "About to submit JCL Job {{ jcl_job_to_submit }}"
 
-    # - name: Setting fact `Job Results`
-    #   set_fact:
-    #     job_results: "{{ job_detail.jobs[0]}}"
+    - name: Submit a JCL job
+      ibm.ibm_zos_core.zos_job_submit:
+        src: "Z32542.JCL({{ jcl_job_to_submit }})"
+        location: data_set
+        return_output: true
+        wait_time_s: 20
+      register: job_detail
 
-    # - name: Results
-    #   debug:  
-    #     msg: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg }} {{ job_results.ret_code.msg_code }}"
+    - name: Setting fact `Job Results`
+      set_fact:
+        job_results: "{{ job_detail.jobs[0]}}"
+
+    - name: Results
+      debug:  
+        msg: "Job {{ job_results.job_id}} completed with {{ job_results.ret_code.msg }} {{ job_results.ret_code.msg_code }}"
 
     # - name: Update the SNOW ticket with the JCL Job status
     #   servicenow.itsm.incident:
