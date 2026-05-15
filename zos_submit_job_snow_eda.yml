@@ -18,14 +18,7 @@
           "Requested By: {{ requester }}"
           "SNOW Catalog Item: {{ sn_catalog_item }}"
 
-    # - set_fact:
-    #     incident_number_cached: "{{ new_incident.record.number }}"
-    #     cacheable: true
-
     # Update to acknowledge the ticket
-
-    # - ansible.builtin.debug:
-    #     msg: "A new incident has been created: {{ new_incident.record.number }}"
 
     - name: Ping the mainframe to see if we can work with it, update the ticket
       ibm.ibm_zos_core.zos_ping: 
@@ -34,6 +27,16 @@
     - name: Display the ping result
       debug: 
         msg: "{{ ping_result.ping }}"
+
+    - name: Retrieve requested item ticket sysid
+      servicenow.itsm.api_info:
+        resource: sc_req_item
+        sysparm_query: numberSTARTSWITH{{ sn_request_number }}
+      register: result
+
+    - name: Print the result
+      ansible.builtin.debug:
+        var: result
 
     # - name: Update the SNOW ticket before running the JCL
     #   servicenow.itsm.incident:
